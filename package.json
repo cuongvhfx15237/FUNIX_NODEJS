@@ -1,0 +1,19 @@
+{
+  "name": "lab",
+  "version": "1.3.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cuongvhfx15237/FUNIX_NODEJS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cuongvhfx15237/FUNIX_NODEJS/issues"
+  },
+  "homepage": "https://github.com/cuongvhfx15237/FUNIX_NODEJS#readme",
+  "description": ""
+}
