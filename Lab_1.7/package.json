@@ -1,0 +1,16 @@
+{
+  "name": "lab_1.7",
+  "version": "1.7.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "nodemon": "^2.0.19"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon --inspect app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
