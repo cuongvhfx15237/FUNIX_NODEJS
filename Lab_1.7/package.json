@@ -4,13 +4,14 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "express": "^4.18.1",
     "nodemon": "^2.0.19"
   },
   "devDependencies": {},
   "scripts": {
-    "start": "nodemon --inspect app.js",
+    "start": "node --inspect app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "cuongvhfx15237",
   "license": "ISC"
 }
