@@ -9,8 +9,9 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node --inspect app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon --inspect app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-server":"node add.js"
   },
   "author": "cuongvhfx15237",
   "license": "ISC"
