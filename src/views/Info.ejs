@@ -1,0 +1,55 @@
+<%- include('layouts/header') %>
+<title><%=user.name%></title>
+  <%- include('layouts/navbar') %>
+    <span></span>
+    <hr>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-12 col-md-5 col-xl-5">
+          <img src="<%=user.Image%>" alt="1">
+        </div>
+        <div class="col-sm-12 col-md-6 col-xl-6">
+          <h1 class="col-12">Họ và tên: <%=user.name%>
+          </h1>
+          <h5 class="idStaff" id="idStaff">Mã nhân viên: <%=user._id%>
+          </h5>
+          <h5 class="doB" id="doB">Ngày sinh: <%=user.doB%>
+          </h5>
+          <h5 class="salaryScale" id="salaryScale">Hệ số lương: <%=user.salaryScale%>
+          </h5>
+          <h5 class="department" id="department">Phòng ban công tác: <%=user.department%>
+          </h5>
+          <h5 class="annualLeave" id="annualLeave">Số ngày phép còn lại: <%=user.annualLeave%>
+          </h5>
+
+          <div class="col-12">
+            <button class="btn btn-outline-primary col-12" type="button" data-bs-toggle="collapse"
+              data-bs-target="#checkIn" aria-expanded="false" aria-controls="checkIn">
+              Thay đổi ảnh cá nhân
+            </button>
+            <hr>
+            <div class="collapse" id="checkIn">
+              <div class="row">
+                <!-- Change Image -->
+                <form action="/changeImage" class="checkin-form" method="POST">
+                  <label class="col-xs-4 col-sm-2"> Link ảnh</label>
+                  <input class="col-xs-8 col-sm-7" name="imageLink" id="imageLink" onchange="onChangeImage()">
+                  </input>
+                  <button type="submit" class="btn btn-success col-xs-12 col-sm-2"> Xác nhận </button>
+                </form>
+                <img src=" " alt="" id="setImgChange" style="max-width: 400px; object-fit: cover;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <br>
+    <script>
+      function onChangeImage(){
+        const imgLink = document.querySelector('#imageLink').value;
+        document.querySelector('#setImgChange').src=imgLink
+      }
+    </script>
+    <%- include('layouts/footer') %>

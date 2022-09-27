@@ -1,0 +1,133 @@
+<%- include('layouts/header') %>
+<link rel="stylesheet" href="/layouts/main.css">
+<%- include('layouts/navbar') %>
+<span></span>
+<hr>
+<div class="container-fluid">
+    <form action="" class="row" id="wildCard" onchange="eventForm()">
+      <label  class="col-4 col-sm-4 col-md-3" for="spaceTick">
+        <input type="checkbox" id="spaceTick">Work Info
+      </label>
+      <label  class="col-4 col-sm-4 col-md-3" for="annualTick">
+  
+        <input type="checkbox" id="annualTick">Annual
+      </label>
+      <label  class="col-4 col-sm-4 col-md-3" for ="checkInTick">
+  
+        <input type="checkbox" id="checkInTick">Salary
+      </label>
+      <select name="month" id="month" class="col-7 col-md-2" onchange="renderWorkInMonth()">
+      <% 
+      const pages = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        const getToday = new Date()
+        const checkMonth = pages[getToday.getMonth()];
+        pages.forEach(page => {
+          if (page === checkMonth){
+            %>
+            <option value="<%=page%>" selected="selected"><%=page%></option>
+            <%
+          } else { %>
+            <option value="<%=page%>"><%=page%></option>
+            <%
+          }
+        })  
+            %>
+          </select>
+        </form>
+        <!-- <button class="col-4 col-md-1 btn-primary" type="button" onclick="renderWorkInMonth()">Submit</button> -->
+    <hr>
+    <div class="table-responsive  body-table">
+      
+      <table class="table">
+        <thead>
+          <tr class="row">
+            <th class="col-1 col-sm-1">Checkin</th>
+            <th class="col-1 col-sm-1">Checkout</th>
+            <th class="col-1 col-sm-1">space</th>
+            <th class="col-1 col-sm-1">TimeWork</th>
+            <th class="col-2 col-sm-2">Annual</th>
+            <th class="col-2 col-sm-2">Formular</th>
+            <th class="col-2 col-sm-2">Salary</th>
+            <th class="col-1 col-sm-1">injection total</th>
+            <th class="col-1 col-sm-1">Covid status</th>
+          </tr>
+        </thead>
+        <tbody>
+  
+          <% const temp=[];
+          let temp1=[]
+          for (let i = 0; i < user.progress.workHistory.length - 1; i++){
+            if(user.progress.workHistory[i+1].checkin.toDateString().replace(/^\S+\s/,'') === user.progress.workHistory[i].checkin.toDateString().replace(/^\S+\s/,'')){
+              temp1.push(user.progress.workHistory[i])
+          }
+          else{
+              temp1.push(user.progress.workHistory[i])
+              temp.push(temp1)
+              temp1=[]
+          }
+        }
+        if (user.progress.workHistory[user.progress.workHistory.length-1].checkin.toDateString().replace(/^\S+\s/,'') === user.progress.workHistory[user.progress.workHistory.length-2].checkin.toDateString().replace(/^\S+\s/,'')){
+          temp1.push(user.progress.workHistory[user.progress.workHistory.length-1])
+        }
+        else{
+  
+          temp1=[user.progress.workHistory[user.progress.workHistory.length-1]]
+        }
+      temp.push(temp1)
+          temp.forEach(histories => {
+            const dateVal = histories[0].checkin.toDateString().replace(/^\S+\s/,'');
+            %>
+            <tr class="row">
+              <td style="background-color:rgba(182, 182, 182, 0.712)"><%=dateVal%></td>
+            </tr>
+            <% let subTime = 0
+            histories.forEach(history => {
+              %>
+  
+              <tr class="row">
+                <td class="col-1 col-sm-1"><%=history.checkin.getHours().toString() + ":" + history.checkin.getMinutes().toString()%></td>
+                <%
+              if (history.checkout !== null){ 
+                subTime += (history.checkout - history.checkin)
+                %>
+                <td class="col-1 col-sm-1"><%=history.checkout.getHours().toString() + ":" + history.checkout.getMinutes().toString()%></td>
+                <% } else { 
+                  subTime += 0
+                  %>
+                  <td class="col-1 col-sm-1">---</td>
+                <% }%>
+                
+                <td class="col-1 col-sm-1"><%=history.Space%></td>
+                </tr>
+                <%
+              })
+              let minutes = Math.floor((subTime / (1000 * 60)) % 60);
+              let hours = Math.floor((subTime / (1000 * 60 * 60)) % 24);
+              let timeCount = hours + ":" + minutes
+              %>
+              <tr>
+                <td class="col-1 col-sm-1"><%=timeCount%></td>
+                </tr>
+            <%
+          })
+          %>
+        </tbody>
+      </table>
+      </div>
+  </div>
+
+  <script>
+    function renderWorkInMonth() {
+      const monthVal = document.querySelector('#month').value
+      console.log(monthVal)
+    }
+    function eventForm() {
+      const bodyVal = document.getElementById('wildCard')
+      
+
+    }
+  </script>
+ 
+    
+
+<%- include('layouts/footer') %>

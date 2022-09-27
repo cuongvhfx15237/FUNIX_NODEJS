@@ -1,0 +1,56 @@
+body {
+    padding: 2rem;
+    margin:0px
+}
+img {
+    width: 100%;;
+}
+
+.ui-state-highlight {
+    border: 0 !important;
+  }
+
+  .ui-state-highlight a {
+    background: #363636 !important;
+    color: #fff !important;
+  }
+  th, td {
+    border: solid 1px black;
+    text-align: center;
+  }
+  $utilities: (
+    "overflow": (
+        property: overflow,
+        values: auto hidden visible scroll,
+      ),
+   );
+   @import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/utilities";
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "width": map-merge(
+      map-get($utilities, "width"),
+      (
+        values: map-merge(
+          map-get(map-get($utilities, "width"), "values"),
+          (10: 10%),
+        ),
+      ),
+    ),
+  )
+);
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/utilities";
+
+$utilities: map-merge(
+  $utilities, (
+    "border": map-merge(
+      map-get($utilities, "border"),
+      ( responsive: true ),
+    ),
+  )
+);

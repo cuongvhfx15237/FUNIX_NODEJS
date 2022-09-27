@@ -1,0 +1,57 @@
+<%- include('layouts/header') %>
+<link rel="stylesheet" href="/layouts/main.css">
+<%- include('layouts/navbar') %>
+<span></span>
+<hr>
+<div class="container-fluid">
+    <form action="">
+        <div class="row">
+        <div class="col-12">
+            <label class="col-3" for="temp">Nhiệt độ</label>
+            <input class="col-6" type="number" id='temp'>
+        </div>
+        <div class="col-12">
+            <label class="col-3" for="dateDec">Ngày khai báo</label>
+            <input class="col-6" type="datetime-local" id="dateDec">
+        </div>
+        <div class="col-12">
+        <label class="col-3" for="Vaccin1">Mũi 1</label>
+        <input class="col-6" type="date" id="Vaccin1">
+        <select name="vaccin" id="vaccin">
+            <option value="astra">Astra</option>
+            <option value="veroCell">veroCell</option>
+            <option value="modena">Modena</option>
+        </select>
+        </div>
+        <div class="col-12">
+        <label class="col-3" for="Vaccin2">Mũi 2</label>
+        <input class="col-6" type="date" id="Vaccin2">
+        <select name="vaccin" id="vaccin">
+            <option value="astra">Astra</option>
+            <option value="veroCell">veroCell</option>
+            <option value="modena">Modena</option>
+        </select>
+        </div>
+        <div class="col-12">
+        <label class="col-3" for="Vaccin3">Mũi 3</label>
+        <input class="col-6" type="date" id="Vaccin3">
+        <select name="vaccin" id="vaccin">
+            <option value="astra">Astra</option>
+            <option value="veroCell">veroCell</option>
+            <option value="modena">Modena</option>
+        </select>
+        </div>
+        <div class="col-12">
+        <label class="col-3" for="covidStatus">Tình trạng nhiễm covid</label>
+        <select class="col-3" name="vaccin" id="vaccin">
+            <option value="covidFalse">Chưa nhiễm</option>
+            <option value="covidTrue">Đã nhiễm</option>
+        </select>
+        <label for="covidStatus">Ngày nhiễm</label>
+        <input type="date" id="covidStatus">
+        </div>
+        <button type="submit"> Xác nhận khai báo</button>
+    </div>
+     </form>
+</div>
+<%- include('layouts/footer') %>
