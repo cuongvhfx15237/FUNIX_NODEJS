@@ -15,6 +15,7 @@
       <label  class="col-4 col-sm-1 col-md-3" for ="checkInTick" onchange="eventForm(event)">
         <input type="checkbox" id="checkInTick">Salary
       </label>
+      <button type="button" onclick="buttonClick()">Click Here</button>
         </form>
   <hr>
 
@@ -35,8 +36,8 @@
       <% } }  %>
   </div>
   </nav>
-
-  <!-- create calendar -->
+<div>
+  <%// create calendar %>
   <%
   let days = [];
   let months = [];
@@ -54,12 +55,14 @@
       } 
   );
   %>
-  <!--create calendar-->
+  </div>
+  <%//create calendar%>
 
-  <!-- create temp array to input table -->
+  <%// create temp array to input table %>
+  <div>
       <% const temp=[];
       let temp1=[]
-      for (let i = 0; i < user.progress.workHistory.length - 1; i++){
+      for (let i = 0; i < user.progress.workHistory.length - 1; i++){ 
         if(user.progress.workHistory[i+1].checkin.toDateString().replace(/^\S+\s/,'') === user.progress.workHistory[i].checkin.toDateString().replace(/^\S+\s/,'')){
           temp1.push(user.progress.workHistory[i])
         }
@@ -78,42 +81,39 @@
       }
       temp.push(temp1)
       %>
-      <!-- Temp array contain information workHistory in database-->
-
-  <table class="tab-content row" id="nav-tabContent" >
-      
+      </div>
+  <%// create temp array to input table %>
+  <%//Header%>
+    <table class="tab-content row" id="nav-tabContent" >
       <tr class="row">
-      <th class="col-sm-2">Date</th>
-      <th class="col-sm-1">Check In</th>
-      <th class="col-sm-1">Check Out</th>
-      <th class="col-sm-1">TimeCount</th>
-      <th class="col-sm-1">Over Time</th>
-      <th class="col-sm-1">Annual Register</th>
-      <th class="col-sm-2">Formular</th>
-      <th class="col-sm-1">Salary</th>
-      <th class="col-sm-1">Vaccin</th>
-      <th class="col-sm-1">Covid</th>
+      <th class="col-sm-12 col-md-3">Date</th>
+      <th class="col-sm-12 col-md-2">Check In</th>
+      <th class="col-sm-12 col-md-2">Check Out</th>
+      <th class="col-sm-12 col-md-2">TimeCount</th>
+      <th class="col-sm-12 col-md-2">Over Time</th>
+      <th class="col-sm-12 col-md-1">Annual Register</th>
       </tr>
-  <%  for(let i = 0; i< tabName.length; i++){
-    %>
-    <%
-    if (i!==getMonthOfToDate){
-      %>
+  <%//Header%>
+
+  <%// loop for months of year and create paggine name from tabName Variable %>
+    <%  for(let i = 0; i< tabName.length; i++){ //for 1
+      if (i!==getMonthOfToDate){ %>
         <tbody class="tab-pane fade" id="<%=tabName[i]%>" role="tabpanel" aria-labelledby="<%=tabName[i]%>-tab">
-        <% for(let j=0; j<months[i].length; j++){
+          <%// loop for day of month non-default%>
+          <% for(let j=0; j<months[i].length; j++){ //for 2
           %>
           <tr class="row">
-                     <td class="col-sm-2"><%=months[i][j].toDateString().replace(/^\S+\s/,'')%></td>
+                     <td class="col-sm-12 col-md-3"><%=months[i][j].toDateString().replace(/^\S+\s/,'')%></td>
                      <% 
                      let count = 0
-                        for(let k=0; k<temp.length; k++){ 
+                        for(let k=0; k<temp.length; k++){ //for 3
                           if(temp[k][0].checkin.toDateString().replace(/^\S+\s/,'')===months[i][j].toDateString().replace(/^\S+\s/,'')){
                             count +=1
                                 }
                           }
                         if(count !==0 ){%>
-                          <!-- check in -->
-                          <td class="col-sm-1">
+                          <%// check in %>
+                          <td class="col-sm-12 col-md-2">
                             <%
                           temp.forEach(tmp=>{
 
@@ -128,9 +128,9 @@
                             }
                           })%>
                           </td>
-                          <!-- check in -->
-                          <!-- check out -->
-                          <td class="col-sm-1">
+                          <%// check in %>
+                          <%// check out %>
+                          <td class="col-sm-12 col-md-2">
                             <%
                           temp.forEach(tmp=>{
                             if(tmp[0].checkin.toDateString().replace(/^\S+\s/,'')===months[i][j].toDateString().replace(/^\S+\s/,'')){
@@ -150,25 +150,23 @@
                             }
                           })%>
                           </td>
-                          <!-- check out -->
+                          <%// check out %>
                             <%
-                          
                         }
                         else {%>
-                          <td class="col-sm-1">0</td>
-                          <td class="col-sm-1">0</td>
+                          <td class="col-sm-12 col-md-2">0</td>
+                          <td class="col-sm-12 col-md-2">0</td>
                           <%
                         }
                       %>
-                      <!-- Time Counts + over Time-->
-
+                      <%// Time Counts + over Time%>
                         <%
                         if (count !== 0){
                           let timeCount = 0
                           let subTime = 0
                           let overTime = 0
                           %>
-                          <td class="col-sm-1">
+                          <td class="col-sm-12 col-md-2">
                             <%
                           temp.forEach(tmp=>{
                             if(tmp[0].checkin.toDateString().replace(/^\S+\s/,'')===months[i][j].toDateString().replace(/^\S+\s/,'')){
@@ -186,39 +184,50 @@
                               })
                               //overTime
                               let overSub= subTime - 8*60*60*1000
-                              console.log(overSub)
                               if(overSub>0){
                                 overTime = Math.floor((overSub/(1000*60*60))%24) +":" +  Math.floor((overSub/(1000*60))%60)
                               }
                               else {
                                 overTime = 0
                               }
-                            
                             %>
-
                             <%=timeCount%>
                             </td>
-                            <td class="col-sm-1"><%=overTime%></td>
+                            <td class="col-sm-12 col-md-2"><%=overTime%></td>
                             <%
                         } else {%>
-                          <td class="col-sm-1">0</td>
-                          <td class="col-sm-1">0</td>
-                          <%
-                        }
+                          <td class="col-sm-12 col-md-2">0</td>
+                          <td class="col-sm-12 col-md-2">0</td>
+                          <%}%>
+                          <%// Time Counts + overTime%>
+                          <%// Annual Leave%>
+                       <% const annualHistory = user.progress.annual
+                        let annualHour = 0
+                        annualHistory.forEach(annualDates=>{
+                            const annualReg = new Date(annualDates.annualDate)
+                            if(annualReg.toDateString().replace(/^\S+\s/,'') === months[i][j].toDateString().replace(/^\S+\s/,'')){
+                              annualHour = annualDates.annualTime/8
+                          }
+                        })
+                        if(annualHour > 0 ){%>
+                          <td class="col-sm-12 col-md-1"><%=annualHour%></td>
+                        <%} else {%>
+                          <td class="col-sm-12 col-md-1">0</td>
+                        <%}
                         %>
-
-                        <!-- Time Counts + overTime-->
+                        <%// Annual Leave%>
                  </tr>
-      <%
-    } %>
-       <%   
-      } else { %>
+        <% } 
+        //end for 2
+      // end oop for day of month non-default
+      // loop for day of month default
+        } else { %>
         <tbody class="tab-pane fade show active" id="<%=tabName[i]%>" role="tabpanel" aria-labelledby="<%=tabName[i]%>-tab">
-      <!-- logic scope-->
+          <%// logic scope%>
           <% for(let j=0; j<months[i].length; j++){
              %>
                  <tr class="row">
-                     <td class="col-sm-2"><%=months[i][j].toDateString().replace(/^\S+\s/,'')%></td>
+                     <td class="col-sm-12 col-md-3"><%=months[i][j].toDateString().replace(/^\S+\s/,'')%></td>
                      <% 
                      let count = 0
                         for(let k=0; k<temp.length; k++){ 
@@ -227,8 +236,8 @@
                                 }
                           }
                         if(count !==0 ){%>
-                          <!-- check in -->
-                          <td class="col-sm-1">
+                          <%// check in %>
+                          <td class="col-sm-12 col-md-2">
                             <%
                           temp.forEach(tmp=>{
 
@@ -243,9 +252,9 @@
                             }
                           })%>
                           </td>
-                          <!-- check in -->
-                          <!-- check out -->
-                          <td class="col-sm-1">
+                          <%// check in %>
+                          <%// check out %>
+                          <td class="col-sm-12 col-md-2">
                             <%
                           temp.forEach(tmp=>{
                             if(tmp[0].checkin.toDateString().replace(/^\S+\s/,'')===months[i][j].toDateString().replace(/^\S+\s/,'')){
@@ -265,26 +274,23 @@
                             }
                           })%>
                           </td>
-                          <!-- check out -->
+                          <%// check out %>
                             <%
-                          
                         }
                         else {%>
-                          <td class="col-sm-1">0</td>
-                          <td class="col-sm-1">0</td>
+                          <td class="col-sm-12 col-md-2">0</td>
+                          <td class="col-sm-12 col-md-2">0</td>
                           <%
                         }
                       %>
-
-                      <!-- Time Counts + over Time-->
-
+                      <%// Time Counts + over Time%>
                         <%
                         if (count !== 0){
                           let timeCount = 0
                           let subTime = 0
                           let overTime = 0
                           %>
-                          <td class="col-sm-1">
+                          <td class="col-sm-12 col-md-2">
                             <%
                           temp.forEach(tmp=>{
                             if(tmp[0].checkin.toDateString().replace(/^\S+\s/,'')===months[i][j].toDateString().replace(/^\S+\s/,'')){
@@ -308,39 +314,59 @@
                               else {
                                 overTime = 0
                               }
-                            
                             %>
-
                             <%=timeCount%>
                             </td>
-                            <td class="col-sm-1"><%=overTime%></td>
+                            <td class="col-sm-12 col-md-2"><%=overTime%></td>
                             <%
                         } else {%>
-                          <td class="col-sm-1">0</td>
-                          <td class="col-sm-1">0</td>
+                          <td class="col-sm-12 col-md-2">0</td>
+                          <td class="col-sm-12 col-md-2">0</td>
                           <%
-                        }
-                        %>
+                              }%>
+                          <%// Time Counts + overTime%>
+                          
+                          <%// Annual Leave%>
 
-                        <!-- Time Counts + overTime-->
-                        
-                        <%
-          }%>
+                          <%  const annualHistory = user.progress.annual
+                        let annualHour = 0
+                        annualHistory.forEach(annualDates=>{
+                            const annualReg = new Date(annualDates.annualDate)
+                            if(annualReg.toDateString().replace(/^\S+\s/,'') === months[i][j].toDateString().replace(/^\S+\s/,'')){
+                              annualHour = annualDates.annualTime/8
+                          }
+                        })
+                        if(annualHour > 0 ){%>
+                          <td class="col-sm-12 col-md-1"><%=annualHour%></td>
+                        <%} else {%>
+                          <td class="col-sm-12 col-md-1">0</td>
+                        <%}
+                        %>
+                        <%// Annual Leave%>
                  </tr>
    <%
       }%>
-      <!-- logic scope-->
+      <%// logic scope%>
       </tbody>
       
-  <%}%>
+  <%}
+  // loop for day of month default
+    }%>
 
   </table>
 
 
 
   <script>
-
-
+      function buttonClick(){
+        let call = document.getElementById('September')
+        console.log(call)
+        console.log(typeof call.length)
+        // call.forEach(obj => {
+        //   console.log(obj.outerText)
+        // })
+      }
+ 
   </script>
  
     

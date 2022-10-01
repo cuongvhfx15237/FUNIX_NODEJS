@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema ({
         annual: [
             {
                 annualDate: {
-                    type: Array,
+                    type: String,
                 },
                 annualTime:{
                     type: String

@@ -156,7 +156,10 @@
                   <input type="text" class="form-control dateAnnual" name="dateAnnual" id="datePick" placeholder="Chọn ngày nghỉ phép" onblur="annualLeaveCheck()">
                   <div><span class="validated text-danger"></span></div>
                   <label for="dateAnnual" class="form-label">Số giờ nghỉ trong ngày</label>
-                  <input type="number" class="form-control" name="timeAnnual" id="timeAnnual" value="8">
+                  <select class="form-control" name="timeAnnual" id="timeAnnual">
+                    <option value="4">4</option>
+                    <option value="8" selected="selected">8</option>
+                    </select>
                 </div>
                 <div class="mb-3">
                   <label for="reasonAnnual" class="form-label">Lí do nghỉ</label>

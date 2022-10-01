@@ -58,14 +58,17 @@ exports.postCheckout = (req, res, next) => {
 }
 
 exports.postAnnual = (req, res, next) => {
-    const annualCheck = req.body.dateAnnual.split(',')
-    const annualRemain = req.user.annualLeave*8 - annualCheck.length*8
-    req.user.progress.annual.push({
-        annualDate: annualCheck,
-        annualTime: req.body.timeAnnual,
-        reason: req.body.reasonAnnual
-    }
-    )
+    const annualChecks = req.body.dateAnnual.split(',')
+    const annualRemain = req.user.annualLeave*8 - annualChecks.length*req.body.timeAnnual
+    annualChecks.forEach(annualCheck=>{
+        req.user.progress.annual.push({
+            annualDate: annualCheck,
+            annualTime: req.body.timeAnnual,
+            reason: req.body.reasonAnnual
+        }
+        )
+
+    })
     req.user.annualLeave = annualRemain/8
     req.user.save().then(() => {
         console.log("Annual Register");
