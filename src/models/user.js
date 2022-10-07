@@ -34,7 +34,6 @@ const userSchema = new mongoose.Schema ({
                 Space: {
                     type: String,
                 },
-                _id: false
             }
         ],
         annual: [
@@ -43,7 +42,7 @@ const userSchema = new mongoose.Schema ({
                     type: String,
                 },
                 annualTime:{
-                    type: String
+                    type: Number,
                 },
                 reason: {
                     type: String,
@@ -55,7 +54,10 @@ const userSchema = new mongoose.Schema ({
             type: String,
             default: 'true'
         },
-        
+        covid: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'covidInfo'
+        }
     }
    
 })

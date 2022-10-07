@@ -9,7 +9,8 @@ router.get('/info', staffController.getInfo)
 
 router.get('/Search', staffController.getSearch)
 
-router.get('/covid', staffController.getCovidInfo)
+// router.get('/covid', staffController.getCovidInfo)
+// router.get('/covid/:params', staffController.postCovidInfo)
 
 router.post('/checkin', staffController.postCheckin)
 

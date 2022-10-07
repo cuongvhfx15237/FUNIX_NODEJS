@@ -1,3 +1,4 @@
+
 const User = require ('../models/user');
 
 exports.getIndex = (req, res, next) => {
@@ -39,7 +40,6 @@ exports.postCheckin = (req, res, next) => {
 
     req.user.progress.status='false'
     req.user.save().then(() => {
-        console.log('check in')
         res.redirect('/')
     }
     )
@@ -50,8 +50,7 @@ exports.postCheckout = (req, res, next) => {
     const length = req.user.progress.workHistory.length
     req.user.progress.workHistory[length -1].checkout = h;
     req.user.progress.status='true'
-    req.user.save().then(() => {
-        console.log('checkout')
+    req.user.save().then(() => {  
         res.redirect('/')
     }
     )
@@ -61,9 +60,10 @@ exports.postAnnual = (req, res, next) => {
     const annualChecks = req.body.dateAnnual.split(',')
     const annualRemain = req.user.annualLeave*8 - annualChecks.length*req.body.timeAnnual
     annualChecks.forEach(annualCheck=>{
+        annualCheck = new Date(annualCheck)
         req.user.progress.annual.push({
             annualDate: annualCheck,
-            annualTime: req.body.timeAnnual,
+            annualTime: parseInt(req.body.timeAnnual),
             reason: req.body.reasonAnnual
         }
         )
@@ -71,20 +71,17 @@ exports.postAnnual = (req, res, next) => {
     })
     req.user.annualLeave = annualRemain/8
     req.user.save().then(() => {
-        console.log("Annual Register");
         res.redirect('/');
     })
 }
 
 //test requet code
 exports.getInfo = (req, res, next) => {
-
     res.render('info', {
             user: req.user
         })
     }
 exports.postNewImage = (req, res, next) => {
-    console.log(req.body)
     req.user.Image=req.body.imageLink;
     req.user.save().then(()=>{
         res.redirect('info')
@@ -93,15 +90,78 @@ exports.postNewImage = (req, res, next) => {
 
 
 exports.getSearch = (req, res, next) => {
+    let salaryPerMonth = req.user.salaryScale*3000000;
+
+    const workHistories= new Array;
+        //create Date list
+        let tempDate = []
+        for(let i =0; i<req.user.progress.workHistory.length; i++){
+            let date = req.user.progress.workHistory[i].checkin.toDateString().replace(/^\S+\s/,'')
+            tempDate.push(date)
+        }
+        for (let i = 0; i<req.user.progress.annual.length; i++){
+            let date = new Date(req.user.progress.annual[i].annualDate)
+            tempDate.push(date.toDateString().replace(/^\S+\s/,''))
+        }
+        let dateLog = [...new Set(tempDate)]
+        //create Date List
+        //create workHistory Log
+        let tempWorkHis = []
+        let t = []
+
+        for (let i=0; i< req.user.progress.workHistory.length-1; i++){
+            if(req.user.progress.workHistory[i+1].checkin.toDateString().replace(/^\S+\s/,'') === req.user.progress.workHistory[i].checkin.toDateString().replace(/^\S+\s/,'')){
+                t.push(req.user.progress.workHistory[i])
+            }
+            else {
+                t.push(req.user.progress.workHistory[i])
+                tempWorkHis.push(t)
+                t=[]
+            }
+
+        }
+        if ( req.user.progress.workHistory[req.user.progress.workHistory.length-1].checkin.toDateString().replace(/^\S+\s/,'')  === req.user.progress.workHistory[req.user.progress.workHistory.length-2].checkin.toDateString().replace(/^\S+\s/,'')){
+            t.push(req.user.progress.worHistory[req.user.progress.workHistory.length-1])
+        }
+        else {
+            t=[req.user.progress.workHistory[req.user.progress.workHistory.length-1]]
+        }
+        tempWorkHis.push(t)
+                //create workHistory Log
+
+        for(let i=0; i< dateLog.length;i++){
+            let dateValue = dateLog[i];
+            let workHis = new Array
+            let annual = 0
+            tempWorkHis.forEach(tmp => {
+                if (tmp[0].checkin.toDateString().replace(/^\S+\s/,'')=== dateValue){
+                    workHis = tmp
+                }
+            })
+            req.user.progress.annual.forEach(tp=>{
+                let date = new Date(tp.annualDate)
+                if(date.toDateString().replace(/^\S+\s/,'') === dateValue){
+                    annual = tp.annualTime
+                }
+            })
+            let j = {date: dateValue, workHis: workHis, annual: annual}
+            workHistories.push(j)
+
+        }
     res.render('Search', {
-        user:req.user
+        user:req.user,
+        workHistories : workHistories,
     })
 }
 
-exports.getCovidInfo = (req, res, next) => {
-    res.render('covidInfo')
-}
-
-exports.getLoginInfo = (req, res, next) => {
-    res.render('Login')
-}
+// exports.getCovidInfo = (req, res, next) => {
+//     console.log(req.query)
+//     res.render('covidInfo')
+// }
+// exports.postCovidInfo = (req, res, next) => {
+//     console.log(req.body)
+//     res.redirect('covidInfo')
+// }
+// exports.getLoginInfo = (req, res, next) => {
+//     res.render('Login')
+// }

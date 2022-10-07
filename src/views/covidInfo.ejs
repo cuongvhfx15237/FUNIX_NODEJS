@@ -4,11 +4,11 @@
 <span></span>
 <hr>
 <div class="container-fluid">
-    <form action="">
-        <div class="row">
+    <div class="row">
+    <form action="/covid/aa" method="post" id="covidInfo">
         <div class="col-12">
             <label class="col-3" for="temp">Nhiệt độ</label>
-            <input class="col-6" type="number" id='temp'>
+            <input class="col-6" type="number" id='temp' name="tempStatus">
         </div>
         <div class="col-12">
             <label class="col-3" for="dateDec">Ngày khai báo</label>
@@ -16,8 +16,8 @@
         </div>
         <div class="col-12">
         <label class="col-3" for="Vaccin1">Mũi 1</label>
-        <input class="col-6" type="date" id="Vaccin1">
-        <select name="vaccin" id="vaccin">
+        <input class="col-6" type="date" id="Vaccin1" name="firstInjection">
+        <select name="vaccinType1" id="vaccinType1">
             <option value="astra">Astra</option>
             <option value="veroCell">veroCell</option>
             <option value="modena">Modena</option>
@@ -25,17 +25,8 @@
         </div>
         <div class="col-12">
         <label class="col-3" for="Vaccin2">Mũi 2</label>
-        <input class="col-6" type="date" id="Vaccin2">
-        <select name="vaccin" id="vaccin">
-            <option value="astra">Astra</option>
-            <option value="veroCell">veroCell</option>
-            <option value="modena">Modena</option>
-        </select>
-        </div>
-        <div class="col-12">
-        <label class="col-3" for="Vaccin3">Mũi 3</label>
-        <input class="col-6" type="date" id="Vaccin3">
-        <select name="vaccin" id="vaccin">
+        <input class="col-6" type="date" id="Vaccin2" name="secondInjection">
+        <select name="vaccinType2" id="vaccinType2">
             <option value="astra">Astra</option>
             <option value="veroCell">veroCell</option>
             <option value="modena">Modena</option>
@@ -43,15 +34,40 @@
         </div>
         <div class="col-12">
         <label class="col-3" for="covidStatus">Tình trạng nhiễm covid</label>
-        <select class="col-3" name="vaccin" id="vaccin">
-            <option value="covidFalse">Chưa nhiễm</option>
-            <option value="covidTrue">Đã nhiễm</option>
+        <select class="col-3" name="covidStatus" id="covidStatus">
+            <option value="false">Chưa nhiễm</option>
+            <option value="true">Đã nhiễm</option>
         </select>
-        <label for="covidStatus">Ngày nhiễm</label>
-        <input type="date" id="covidStatus">
+        <label for="covidDate">Ngày nhiễm</label>
+        <input type="date" id="covidDate" name="covidDate">
         </div>
-        <button type="submit"> Xác nhận khai báo</button>
-    </div>
-     </form>
+        <hr>
+        <% if (requiredStatus === false){%>
+            <button type="submit" class="btn-success"> Xác nhận khai báo </button>
+            <span class="alert alert-light">Bạn chưa tiêm vaccin hoặc chưa khai báo tiêm vaccin, vui lòng khai báo hoặc đăng ký tiêm bổ sung</span>
+            <hr>
+            <%
+        } else { %>
+            <button type="submit" class="btn-success"> Xác nhận khai báo</button>
+            <hr>
+        <%}%>
+    </form>
 </div>
+<% if(requiredStatus === false){%>
+    <div class="row"></div>
+<%}else{%>
+    <div class="row">
+        <h4>Tên nhân viên: <%=name%></h4>
+        <p>Nhiệt độ khai báo lần cuối: <%=tempValue%> °C</p>
+        <p>Ngày khai báo cuối cùng: <%=tempToday%></p>
+        <p>Vaccin mũi 1: <%=firstInjectionType%></p>
+        <p>Ngày tiêm : <%=firstInjection%></p>
+        <p>Vaccin mũi 2: <%=secondInjectionType%></p>
+        <p>Ngày tiêm: <%=secondInjection%></p>
+        <p>Lịch sử nhiễm covid: <%=covidPositive%></p>
+    </div>
+<%}%>
+<script>
+    
+</script>
 <%- include('layouts/footer') %>

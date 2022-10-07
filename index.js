@@ -4,7 +4,9 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app=express();
 const User = require('./src/models/user');
+const covidInfo = require('./src/models/covidInfo');
 const staffRouter=require('./src/Routers/Staff')
+const covidInfoRouter = require('./src/Routers/covidInfo');
 
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
@@ -23,8 +25,8 @@ app.use((req, res, next) => {
         console.log(err)
     })
 })
-
 app.use('/', staffRouter)
+app.use('/', covidInfoRouter)
 
 
 mongoose.connect('mongodb+srv://cuongvhfx15237:adminitration@cuongvhfx15237.k0pn0dz.mongodb.net/Assigment_1?retryWrites=true&w=majority')
@@ -45,6 +47,7 @@ mongoose.connect('mongodb+srv://cuongvhfx15237:adminitration@cuongvhfx15237.k0pn
 
         }
     })
+
     console.log('Connect: !!!');
     app.listen(3000);
 })
