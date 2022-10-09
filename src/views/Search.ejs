@@ -3,23 +3,84 @@
 <%- include('layouts/navbar') %>
 <span></span>
 <hr>
-<div class="container-fluid fixed">
-    <form action="" class="row" id="wildCard" onchange="eventForm(event)">
-      <label  class="col-4 col-sm-1 col-md-3" for="spaceTick">
-        <input type="checkbox" id="spaceTick" >Work Info
-      </label>
-      <label  class="col-4 col-sm-1 col-md-3" for="annualTick" onchange="eventForm(event)">
-  
-        <input type="checkbox" id="annualTick">Annual
-      </label>
-      <label  class="col-4 col-sm-1 col-md-3" for ="checkInTick" onchange="eventForm(event)">
-        <input type="checkbox" id="checkInTick">Salary
-      </label>
-      <button type="button" onclick="buttonClick()">Click Here</button>
-        </form>
-  <hr>
+<div class="container-fluid fixed ">
+  <div class="row">
+    <button type="button" class="btn btn-primary col-12 col-sm-3" data-bs-toggle="modal" data-bs-target="#searchWorkInfo">Work Info </button>
+    <div class="col-12 col-sm-1"></div>
+    <button type="button" class="btn btn-primary col-12 col-sm-3" data-bs-toggle="modal" data-bs-target="#searchSalary">Salary </button>
+    <div class="col-12 col-sm-1"></div>
+    <button type="button" class="btn btn-primary col-12 col-sm-3" data-bs-toggle="modal" data-bs-target="#covidSearch">Covid Infomation</button>
+ <%//open modal to Search %>
+ <!-- Modal work Search -->
+ <div class="modal fade" id="searchWorkInfo" tabindex="-1" aria-labelledby="searchWorkInfoLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="searchWorkInfoLabel">Tìm kiếm lịch sử làm việc</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="">
+          <input type="date"> Chọn ngày muốn tìm
+        </label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Search</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-    <nav>
+ <!-- Modal Salary Search -->
+ <div class="modal fade" id="searchSalary" tabindex="-1" aria-labelledby="searchSalaryLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="searchSalaryLabel">Lương tháng muốn xem</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="">
+          <input type="date"> Chọn lương tháng muốn xem
+        </label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Search</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+ <!-- Modal covid Search -->
+ <div class="modal fade" id="covidSearch" tabindex="-1" aria-labelledby="covidSearchLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="covidSearchLabel">Thông tin covid</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="">
+          <input type="checkbox"> Thông tin chích vaccin
+        </label>
+        <label for="">
+          <input type="checkbox"> Thông tin dương tính covid
+        </label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Search</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+ <%//open modal to Search %>
+
+</div>
+  <hr>
+  <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist" >
       <% 
       const tabName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -139,44 +200,72 @@
             </td>
             <%//Annual %>
         <%}})%>
-        <tr class="row">
+        <%//Calculator Table%>
+<tr class="row">
   <th class="col-sm-12 col-md-6 bg-success"> complete time </th>
   <td class="col-sm-12 col-md-6 bg-success">
   <%
   let completeTimeInMonth = 0
-  console.log(workHistories)
+  let inCompleteTimeInMonth = 0
+  let timeAnnualInMonth = 0
+  let overTimeInMonth = 0
   workHistories.forEach(workHistory=>{
           let x = new Date(workHistory.date)
+          let completeTimeInDate = 0
               if ((x.getMonth()) === i) { 
                 workHistory.workHis.forEach(workLog=>{
                   if(workLog.checkout === null){
-                    completeTimeInMonth +=0
+                    completeTimeInDate +=0
                   }
                   else{
-                  completeTimeInMonth += workLog.checkout - workLog.checkin
+                    completeTimeInDate += workLog.checkout-workLog.checkin
+                  }
+                })
+                if (completeTimeInDate < 8*3600*1000) {
+                   inCompleteTimeInMonth += 8*3600*1000 - completeTimeInDate
                 }
-              })
-              completeTimeInMonth += workHistory.annual*3600*1000
-              }})%>
-              <%=Math.floor(completeTimeInMonth / (1000 * 60 * 60))  + ":" +  Math.floor(completeTimeInMonth%60)%>
+                else {
+                  overTimeInMonth += completeTimeInDate - 8*3600*1000
+                }
+              completeTimeInMonth += completeTimeInDate
+              timeAnnualInMonth += workHistory.annual*3600*1000
+              }})
+              %>
+              <%=Math.floor(completeTimeInMonth / (1000 * 60 * 60))  + ":" +  Math.floor((completeTimeInMonth%3600000)/60000)%>
               </td>
+              <tr class="row">
+              <th class="col-sm-12 col-md-6 bg-success"> Total over Time</th>
+              <td class="col-sm-12 col-md-6 bg-success">
+                <%=Math.floor(overTimeInMonth / (1000 * 60 * 60))  + ":" +  Math.floor((overTimeInMonth%3600000)/60000)%>
+                </td>
+  </tr>
   </tr>
   <tr class="row">
-    <th class="col-sm-12 col-md-6 bg-warning"> incomplete time = (8*30 - complete time)</th>
-    <td class="col-sm-12 col-md-6 bg-warning">
-      <% let inCompleteTimeInMonth = 8*30*3600*1000 - completeTimeInMonth %>
-      <%=Math.floor(inCompleteTimeInMonth / (1000 * 60 * 60))  + ":" +  Math.floor(inCompleteTimeInMonth%60)%>
-
+    <th class="col-sm-12 col-md-6 bg-success">Total Annual time</th>
+    <td class="col-sm-12 col-md-6 bg-success">
+      <%=Math.floor(timeAnnualInMonth / (1000 * 60 * 60))  + ":" +  Math.floor((timeAnnualInMonth%3600000)/60000)%>
+      </td>
+      </tr>
+      <tr class="row">
+        <th class="col-sm-12 col-md-6 bg-warning"> Total incomplete time</th>
+        <td class="col-sm-12 col-md-6 bg-warning">
+          <%=Math.floor(inCompleteTimeInMonth / (1000 * 60 * 60))  + ":" +  Math.floor((inCompleteTimeInMonth%3600000)/60000)%>
+          </td>
+        </tr>
+        <tr class="row">
+    <th class="col-sm-12 col-md-6 bg-secondary"> Salary Formular</th>
+    <td class="col-sm-12 col-md-6 bg-secondary">
+      <%=user.salaryScale + "*" + '3000000' + "+ (" + (Math.floor(overTimeInMonth / (1000 * 60 * 60))  + ":" +  Math.floor((overTimeInMonth%3600000)/60000)) + "-" + (Math.floor(inCompleteTimeInMonth / (1000 * 60 * 60))  + ":" +  Math.floor((inCompleteTimeInMonth%3600000)/60000)) + "+" + (Math.floor(timeAnnualInMonth / (1000 * 60 * 60))  + ":" +  Math.floor((timeAnnualInMonth%3600000)/60000)) +")" + "*" + "200000"%>
       </td>
     </tr>
     <tr class="row">
-    <th class="col-sm-12 col-md-6 bg-info bg-gradient"> Salary</th>
-    <td class="col-sm-12 col-md-6 bg-info bg-gradient">
-      <%=Math.floor(user.salaryScale *3000000 - (inCompleteTimeInMonth/(1000*3600)) * 200000) + '   VND'%>
-
+    <th class="col-sm-12 col-md-6 bg-secondary"> Salary</th>
+    <td class="col-sm-12 col-md-6 bg-secondary">
+      <%=Math.floor(user.salaryScale *3000000 + ((overTimeInMonth - inCompleteTimeInMonth + timeAnnualInMonth)/(1000*3600)) * 200000) + '   VND'%>
       </td>
     </tr>
-            </tr>
+</tr>
+<%//Calculator Table%>
         <% } else { %>
         <tbody class="tab-pane fade show active" id="<%=tabName[i]%>" role="tabpanel" aria-labelledby="<%=tabName[i]%>-tab">
           <tr class="row">
@@ -270,44 +359,73 @@
 </td>
 <%//Annual %>
 <%}})%>
+
+<%//Calculator Table%>
 <tr class="row">
   <th class="col-sm-12 col-md-6 bg-success"> complete time </th>
   <td class="col-sm-12 col-md-6 bg-success">
   <%
   let completeTimeInMonth = 0
-  console.log(workHistories)
+  let inCompleteTimeInMonth = 0
+  let timeAnnualInMonth = 0
+  let overTimeInMonth = 0
   workHistories.forEach(workHistory=>{
           let x = new Date(workHistory.date)
+          let completeTimeInDate = 0
               if ((x.getMonth()) === i) { 
                 workHistory.workHis.forEach(workLog=>{
                   if(workLog.checkout === null){
-                    completeTimeInMonth +=0
+                    completeTimeInDate +=0
                   }
                   else{
-                  completeTimeInMonth += workLog.checkout - workLog.checkin
+                    completeTimeInDate += workLog.checkout-workLog.checkin
+                  }
+                })
+                if (completeTimeInDate < 8*3600*1000) {
+                   inCompleteTimeInMonth += 8*3600*1000 - completeTimeInDate
                 }
-              })
-              completeTimeInMonth += workHistory.annual*3600*1000
-              }})%>
-              <%=Math.floor(completeTimeInMonth / (1000 * 60 * 60))  + ":" +  Math.floor(completeTimeInMonth%60)%>
+                else {
+                  overTimeInMonth += completeTimeInDate - 8*3600*1000
+                }
+              completeTimeInMonth += completeTimeInDate
+              timeAnnualInMonth += workHistory.annual*3600*1000
+              }})
+              %>
+              <%=Math.floor(completeTimeInMonth / (1000 * 60 * 60))  + ":" +  Math.floor((completeTimeInMonth%3600000)/60000)%>
               </td>
+              <tr class="row">
+              <th class="col-sm-12 col-md-6 bg-success"> Total over Time</th>
+              <td class="col-sm-12 col-md-6 bg-success">
+                <%=Math.floor(overTimeInMonth / (1000 * 60 * 60))  + ":" +  Math.floor((overTimeInMonth%3600000)/60000)%>
+                </td>
+  </tr>
   </tr>
   <tr class="row">
-    <th class="col-sm-12 col-md-6 bg-warning"> incomplete time = (8*30 - complete time)</th>
-    <td class="col-sm-12 col-md-6 bg-warning">
-      <% let inCompleteTimeInMonth = 8*30*3600*1000 - completeTimeInMonth %>
-      <%=Math.floor(inCompleteTimeInMonth / (1000 * 60 * 60))  + ":" +  Math.floor(inCompleteTimeInMonth%60)%>
-
+    <th class="col-sm-12 col-md-6 bg-success">Total Annual time</th>
+    <td class="col-sm-12 col-md-6 bg-success">
+      <%=Math.floor(timeAnnualInMonth / (1000 * 60 * 60))  + ":" +  Math.floor((timeAnnualInMonth%3600000)/60000)%>
+      </td>
+      </tr>
+      <tr class="row">
+        <th class="col-sm-12 col-md-6 bg-warning"> Total incomplete time</th>
+        <td class="col-sm-12 col-md-6 bg-warning">
+          <%=Math.floor(inCompleteTimeInMonth / (1000 * 60 * 60))  + ":" +  Math.floor((inCompleteTimeInMonth%3600000)/60000)%>
+          </td>
+        </tr>
+        <tr class="row">
+    <th class="col-sm-12 col-md-6 bg-secondary"> Salary Formular</th>
+    <td class="col-sm-12 col-md-6 bg-secondary">
+      <%=user.salaryScale + "*" + '3000000' + "+ (" + (Math.floor(overTimeInMonth / (1000 * 60 * 60))  + ":" +  Math.floor((overTimeInMonth%3600000)/60000)) + "-" + (Math.floor(inCompleteTimeInMonth / (1000 * 60 * 60))  + ":" +  Math.floor((inCompleteTimeInMonth%3600000)/60000)) + "+" + (Math.floor(timeAnnualInMonth / (1000 * 60 * 60))  + ":" +  Math.floor((timeAnnualInMonth%3600000)/60000)) +")" + "*" + "200000"%>
       </td>
     </tr>
     <tr class="row">
-    <th class="col-sm-12 col-md-6 bg-info bg-gradient"> Salary</th>
-    <td class="col-sm-12 col-md-6 bg-info bg-gradient">
-      <%=Math.floor(user.salaryScale *3000000 - (inCompleteTimeInMonth/(1000*3600)) * 200000) + '   VND'%>
-
+    <th class="col-sm-12 col-md-6 bg-secondary"> Salary</th>
+    <td class="col-sm-12 col-md-6 bg-secondary">
+      <%=Math.floor(user.salaryScale *3000000 + ((overTimeInMonth - inCompleteTimeInMonth + timeAnnualInMonth)/(1000*3600)) * 200000) + '   VND'%>
       </td>
     </tr>
 </tr>
+<%//Calculator Table%>
       <%}
       // loop for day of month default
     }%>

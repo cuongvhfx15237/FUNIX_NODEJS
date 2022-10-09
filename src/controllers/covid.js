@@ -67,7 +67,6 @@ exports.postCovidStatus = (req, res, next) => {
     }
     else {
         userCovid.heathHistories.push({date: new Date(), temp: req.body.tempStatus })
-        console.log(covidDate)
         if(req.body.covidDate !== null){
             userCovid.covidPositive.push(covidDate)
         }

@@ -35,7 +35,6 @@ exports.postCheckin = (req, res, next) => {
         checkin: h,
         checkout:'',
         Space:workSpace,
-        _id:false
     })
 
     req.user.progress.status='false'
@@ -127,6 +126,7 @@ exports.getSearch = (req, res, next) => {
             t=[req.user.progress.workHistory[req.user.progress.workHistory.length-1]]
         }
         tempWorkHis.push(t)
+
                 //create workHistory Log
 
         for(let i=0; i< dateLog.length;i++){
@@ -146,11 +146,16 @@ exports.getSearch = (req, res, next) => {
             })
             let j = {date: dateValue, workHis: workHis, annual: annual}
             workHistories.push(j)
-
+            
         }
+        const array = workHistories.sort((a,b)=> {
+            a.annual-b.annual
+        })
+        console.log(array)
+
     res.render('Search', {
         user:req.user,
-        workHistories : workHistories,
+        workHistories : workHistories, 
     })
 }
 
