@@ -120,12 +120,13 @@ exports.getSearch = (req, res, next) => {
 
         }
         if ( req.user.progress.workHistory[req.user.progress.workHistory.length-1].checkin.toDateString().replace(/^\S+\s/,'')  === req.user.progress.workHistory[req.user.progress.workHistory.length-2].checkin.toDateString().replace(/^\S+\s/,'')){
-            t.push(req.user.progress.worHistory[req.user.progress.workHistory.length-1])
+            t.push(req.user.progress.workHistory[req.user.progress.workHistory.length-1])
         }
         else {
             t=[req.user.progress.workHistory[req.user.progress.workHistory.length-1]]
         }
         tempWorkHis.push(t)
+        console.log(tempWorkHis)
 
                 //create workHistory Log
 
@@ -151,7 +152,7 @@ exports.getSearch = (req, res, next) => {
         const array = workHistories.sort((a,b)=> {
             a.annual-b.annual
         })
-        console.log(array)
+
 
     res.render('Search', {
         user:req.user,

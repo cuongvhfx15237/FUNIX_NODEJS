@@ -1,7 +1,9 @@
 const covidInfo = require('../models/covidInfo');
 const User = require ('../models/user');
 
+
 exports.getCovidStatus = (req, res, next) => {
+
     covidInfo.findOne().populate('userId').then(userCovid => {
         if(userCovid === null) {
             res.render('covidInfo', {

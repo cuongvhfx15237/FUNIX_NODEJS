@@ -128,8 +128,8 @@
                 ---
                 <%
               } else {
-                %>
-                <%workHistory.workHis.forEach(workLog=>{
+               
+                workHistory.workHis.forEach(workLog=>{
                   let checkinTime = workLog.checkin.getHours() + ":" + workLog.checkin.getMinutes()%>
                   <%=checkinTime%>
                   <br>
@@ -433,15 +433,8 @@
 
   </table>
 </div>
-
-
   <script>
-
- 
   </script>
- 
-    
-
 <%- include('layouts/footer') %>
 
 
