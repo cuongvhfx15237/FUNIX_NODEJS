@@ -126,7 +126,6 @@ exports.getSearch = (req, res, next) => {
             t=[req.user.progress.workHistory[req.user.progress.workHistory.length-1]]
         }
         tempWorkHis.push(t)
-        console.log(tempWorkHis)
 
                 //create workHistory Log
 
