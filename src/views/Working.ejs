@@ -194,7 +194,7 @@
       let timeSubmit = datePickArr.length * timeAnnual
       if (timeSubmit <= "<%=annualLeave%>"*8) {
         document.querySelector('#annualSubmit').disabled=false
-        document.querySelector('#alert_annualLeave').innerHTML = ""
+        document.querySelector('#alert_annualLeave').innerHTML = timeSubmit/8
       }
       else{
         document.querySelector('#annualSubmit').disabled=true

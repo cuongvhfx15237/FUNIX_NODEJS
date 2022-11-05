@@ -2,6 +2,8 @@
 const User = require ('../models/user');
 
 exports.getIndex = (req, res, next) => {
+    console.log('aaaa')
+    console.log(req.user)
     let workHis = req.user.progress.workHistory
     const length = workHis.length
     const today = new Date()

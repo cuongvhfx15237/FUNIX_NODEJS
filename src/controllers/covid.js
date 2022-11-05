@@ -34,6 +34,7 @@ exports.getCovidStatus = (req, res, next) => {
 
 exports.postCovidStatus = (req, res, next) => {
     const tempStatus = req.body.tempStatus;
+    console.log(req.body)
     const firstInjection = req.body.firstInjection;
     const secondInjection = req.body.secondInjection;
     const vaccinType1 = req.body.vaccinType1;

@@ -18,7 +18,7 @@ const covidInfoSchema = new mongoose.Schema ({
             date: {
                 type: Date
             },
-            type: {
+            type: { 
                 type: String
             }
         },
