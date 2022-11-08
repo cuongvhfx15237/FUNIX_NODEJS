@@ -6,7 +6,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-12 col-md-5 col-xl-5">
-          <img src="<%=user.Image%>" alt="1">
+          <img src="<%=user.Image%>" alt="Vui lòng cập nhật ảnh">
         </div>
         <div class="col-sm-12 col-md-6 col-xl-6">
           <h1 class="col-12">Họ và tên: <%=user.name%>
@@ -30,14 +30,20 @@
             <hr>
             <div class="collapse" id="checkIn">
               <div class="row">
-                <!-- Change Image -->
+                <!-- Change Image 
                 <form action="/changeImage" class="checkin-form" method="POST">
                   <label class="col-xs-4 col-sm-2"> Link ảnh</label>
                   <input class="col-xs-8 col-sm-7" name="imageLink" id="imageLink" onchange="onChangeImage()">
                   </input>
                   <button type="submit" class="btn btn-success col-xs-12 col-sm-2"> Xác nhận </button>
+                </form> -->
+                <form action="/changeImage" class="checkin-form" method="POST" enctype="multipart/form-data">
+                  <label class="col-xs-4 col-sm-2" for="image"> Upload Image</label>
+                  <input class="col-xs-8 col-sm-7" name="image" id="image" type="file"/>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button type="submit" class="btn btn-success col-xs-12 col-sm-2"> Xác nhận </button>
                 </form>
-                <img src=" " alt="" id="setImgChange" style="max-width: 400px; object-fit: cover;">
+                <!-- <img src=" " alt="" id="setImgChange" style="max-width: 400px; object-fit: cover;"> -->
               </div>
             </div>
           </div>
@@ -46,10 +52,10 @@
     </div>
     <hr>
     <br>
-    <script>
+    <!-- <script>
       function onChangeImage(){
         const imgLink = document.querySelector('#imageLink').value;
         document.querySelector('#setImgChange').src=imgLink
       }
-    </script>
+    </script> -->
     <%- include('layouts/footer') %>

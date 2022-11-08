@@ -1,9 +1,9 @@
+const mongoose = require('mongoose');
 
 const User = require ('../models/user');
+const { validationResult } = require('express-validator/check');
 
 exports.getIndex = (req, res, next) => {
-    console.log('aaaa')
-    console.log(req.user)
     let workHis = req.user.progress.workHistory
     const length = workHis.length
     const today = new Date()
@@ -15,7 +15,7 @@ exports.getIndex = (req, res, next) => {
             status: req.user.progress.status,
             timeLapse:0,
             annualLeave: '',
-            today: today
+            today: today,
         })
     }
     else {
@@ -25,7 +25,7 @@ exports.getIndex = (req, res, next) => {
             workHis: workHis,
             status: req.user.progress.status,
             annualLeave:req.user.annualLeave,
-            today: today
+            today: today,
         })
 }
      
@@ -83,9 +83,41 @@ exports.getInfo = (req, res, next) => {
         })
     }
 exports.postNewImage = (req, res, next) => {
-    req.user.Image=req.body.imageLink;
+    console.log('aaaaaaaa')
+    const image = req.file
+    console.log(image)
+    if(!image) {
+        return res.status(422).render('info', {
+            pageTitle: 'Info',
+            path: '/info',
+            user: req.user,
+            errorMessage: 'Attached file is not an image.',
+            validationErrors: []
+        })
+    }
+    const errors = validationResult(req);
+    
+    if (!errors.isEmpty()) {
+        console.log(errors.array());
+        return res.status(422).render('info', {
+            pageTitle: 'info',
+            path: '/info',
+            editing: false,
+            hasError: true,
+            user: req.user,
+            errorMessage: errors.array()[0].msg,
+            validationErrors: errors.array()
+        });
+    }
+    const imageUrl = image.path
+    req.user.Image=imageUrl;
     req.user.save().then(()=>{
-        res.redirect('info')
+        res.redirect('/info')
+    })
+    .catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
     })
 }
 
@@ -150,10 +182,6 @@ exports.getSearch = (req, res, next) => {
             workHistories.push(j)
             
         }
-        const array = workHistories.sort((a,b)=> {
-            a.annual-b.annual
-        })
-
 
     res.render('Search', {
         user:req.user,

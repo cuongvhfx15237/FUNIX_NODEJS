@@ -1,12 +1,12 @@
 <body>
-
     <!-- Header-->
     <nav class="navbar navbar-expand-lg navbar-light bg-info " >
       <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <i class="fas fa-align-justify"></i>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse main-header__nav" id="navbarNav">
+          <%  if (isAuthenticated){ %>
           <ul class="navbar-nav">
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="/" style="font-size:1.5rem">Home</a>
@@ -20,8 +20,23 @@
             <li class="nav-item">
               <a class="nav-link" href="/covid"  style="font-size:1.5rem">covid</a>
             </li>
-         
-          </ul>
-        </div>
+            </ul>
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <form action="/logout" method="post">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="nav-link btn-success" type="submit" style="font-size:1.5rem">Logout</button>
+                </form>
+              </li>
+            </ul>
+            <% }  else { %>
+              <h3> Phần mềm quản lý nhân sự </h3>
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="<%= path === '/login' ? 'active' : '' %> nav-link" href="/login" style="font-size:1.5rem">Login</a>
+                </li>
+              </ul>
+              <% } %>
+            </div> 
       </div>
     </nav>

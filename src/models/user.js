@@ -1,8 +1,27 @@
 const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema ({
+    email: {
+        type: String,
+        required: true,
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    resetToken: String,
+    resetTokenExpiration: Date,
     name: {
         type: String,
     },
+    role: {
+        type: String,
+        required: true
+    },
+    permissionUser: [
+        {
+            type: String,
+        }
+    ],
     doB: {
         type: String,
     },
@@ -20,7 +39,7 @@ const userSchema = new mongoose.Schema ({
     },
     Image: {
         type: String,
-        required: true
+        required: true,
     },
     progress: {
         workHistory: [
