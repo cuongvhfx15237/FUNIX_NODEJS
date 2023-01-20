@@ -4,7 +4,8 @@ const router = express.Router();
 const covidController = require('../controllers/covid');
 const isAuth = require('../middleware/is-auth')
 
-router.get('/covid',isAuth, covidController.getCovidStatus)
+router.get('/',isAuth, covidController.getCovidStatus)
 
-router.post('/covid/aa', covidController.postCovidStatus)
+router.post('/submit', covidController.postCovidStatus)
+
 module.exports = router

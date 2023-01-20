@@ -10,15 +10,17 @@ router.get('/info',isAuth, staffController.getInfo)
 
 router.get('/Search',isAuth, staffController.getSearch)
 
+router.get('/Search2',isAuth, staffController.getSearch2)
+
 // router.get('/covid', staffController.getCovidInfo)
 // router.get('/covid/:params', staffController.postCovidInfo)
 
-router.post('/checkin',isAuth , staffController.postCheckin)
+router.post('/checkin', staffController.postCheckin)
 
-router.post('/checkout',isAuth , staffController.postCheckout)
+router.post('/checkout', staffController.postCheckout)
 
-router.post('/annual',isAuth , staffController.postAnnual)
+router.post('/annual', staffController.postAnnual)
 
-router.post('/changeImage',isAuth , staffController.postNewImage)
+router.post('/changeImage', staffController.postNewImage)
 
 module.exports = router

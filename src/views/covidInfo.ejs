@@ -1,11 +1,10 @@
 <%- include('layouts/header') %>
-<link rel="stylesheet" href="/layouts/main.css">
 <%- include('layouts/navbar') %>
 <span></span>
 <hr>
 <div class="container-fluid">
     <div class="row">
-    <form action="/covid/aa" method="post" id="covidInfo">
+    <form action="/covid/submit" method="POST" id="covidInfo">
         <div class="col-12">
             <label class="col-3" for="temp">Nhiệt độ</label>
             <input class="col-6" type="number" id='temp' name="tempStatus">
@@ -42,15 +41,13 @@
         <input type="date" id="covidDate" name="covidDate">
         </div>
         <hr>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <button type="submit" class="btn-success"> Xác nhận khai báo </button>
         <% if (requiredStatus === false){%>
-            <button type="submit" class="btn-success"> Xác nhận khai báo </button>
             <span class="alert alert-light">Bạn chưa tiêm vaccin hoặc chưa khai báo tiêm vaccin, vui lòng khai báo hoặc đăng ký tiêm bổ sung</span>
             <hr>
             <%
-        } else { %>
-            <button type="submit" class="btn-success"> Xác nhận khai báo</button>
-            <hr>
-        <%}%>
+        }%>
     </form>
 </div>
 <% if(requiredStatus === false){%>
@@ -65,6 +62,7 @@
         <p>Vaccin mũi 2: <%=secondInjectionType%></p>
         <p>Ngày tiêm: <%=secondInjection%></p>
         <p>Lịch sử nhiễm covid: <%=covidPositive%></p>
+        <p>Ngày nhiễm gần nhất: <%=covidPositiveDate%></p>
     </div>
 <%}%>
 <script>

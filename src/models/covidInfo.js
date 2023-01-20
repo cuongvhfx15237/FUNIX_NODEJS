@@ -29,12 +29,19 @@ const covidInfoSchema = new mongoose.Schema ({
             },
             temp: {
                 type: Number
-            }
+            },
+            _id: false,
         }],
 
     covidPositive: [
         {
+            covidStatus: {
+                type: Boolean,
+            },
+            date: {
             type: Date
+            },
+            _id: false,
         }
     ]
 

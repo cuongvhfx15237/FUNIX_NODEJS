@@ -53,6 +53,7 @@ const userSchema = new mongoose.Schema ({
                 Space: {
                     type: String,
                 },
+                _id: false,
             }
         ],
         annual: [

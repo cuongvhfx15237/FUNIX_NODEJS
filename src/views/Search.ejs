@@ -1,5 +1,4 @@
 <%- include('layouts/header') %>
-<link rel="stylesheet" href="/layouts/main.css">
 <%- include('layouts/navbar') %>
 <span></span>
 <hr>
@@ -80,7 +79,6 @@
 
 </div>
   <hr>
-  <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist" >
       <% 
       const tabName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -89,14 +87,13 @@
       for(let i = 0; i< tabName.length; i++){
         if(i!==getMonthOfToDate){
           %>
-    <p class="nav-link" id="<%=tabName[i]%>-tab" data-bs-toggle="tab" data-bs-target="#<%=tabName[i]%>" type="a" role="tab" aria-controls="<%=tabName[i]%>" aria-selected="false" onchange="eventForm(event)"><%=tabName[i]%></p>
+    <a href="?page=<%=i+1%>" class="nav-link" id="<%=tabName[i]%>-tab" aria-controls="<%=tabName[i]%>" aria-selected="false" onchange="eventForm(event)"><%=tabName[i]%></a>
     
     <% } else { %>
-      <p class="nav-link active" id="<%=tabName[i]%>-tab" data-bs-toggle="tab" data-bs-target="#<%=tabName[i]%>" type="p" role="tab" aria-controls="<%=tabName[i]%>" aria-selected="true" onchange="eventForm(event)"><%=tabName[i]%>
-        </p>
+      <a href="?page=<%=i+1%>" class="nav-link active" id="<%=tabName[i]%>-tab" aria-controls="<%=tabName[i]%>" aria-selected="true" onchange="eventForm(event)"><%=tabName[i]%>
+        </a>
       <% } }  %>
   </div>
-  </nav>
 
   <%//Header%>
     <table class="tab-content row" id="nav-tabContent" >
@@ -425,13 +422,19 @@
       </td>
     </tr>
 </tr>
-<%//Calculator Table%>
+
       <%}
-      // loop for day of month default
     }%>
     </tbody>
-
-  </table>
+    
+    </table>
+    <input disabled value="Thông tin quản lý"></input>
+    <br>
+    <input disabled value="ID: "></input>
+    <input disabled value="<%=adminId%>"></input>
+    <br>
+    <input disabled value="Name: "></input>
+    <input disabled value="<%=adminName%>"></input>
 </div>
   <script>
   </script>

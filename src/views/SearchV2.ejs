@@ -1,0 +1,64 @@
+<%- include('layouts/header') %>
+<%- include('layouts/navbar') %>
+<span></span>
+<hr>
+<% // table %>
+<table class="tab-content row" id="nav-tabContent" >
+  <tr class="row">
+  <th class="col-sm-12 col-md-2">Date</th>
+  <th class="col-sm-12 col-md-2">Check In</th>
+  <th class="col-sm-12 col-md-2">Check Out</th>
+  <th class="col-sm-12 col-md-1">Space</th>
+  <th class="col-sm-12 col-md-2">TimeCount</th>
+  <th class="col-sm-12 col-md-2">Over Time</th>
+  <th class="col-sm-12 col-md-1">Annual Register</th>
+  </tr>
+  <% workHistories.forEach(workHistory=> {
+    //date value
+      let day = workHistory.checkin.toDateString()
+      let checkin = workHistory.checkin.getHours() + ":" + workHistory.checkin.getMinutes()
+      let checkout = 0;
+      let timeCount = 0;
+      let overTime = 0;
+      if(workHistory.checkout){
+        checkout = workHistory.checkout.getHours() + ":" + workHistory.checkout.getMinutes()
+        timeCount = (workHistory.checkout - workHistory.checkin)/3600000;
+        overTime = timeCount - 8
+      }
+      else {
+        checkout = "chưa kết thúc"
+      }
+      let annualRegiter = 0
+      annual.forEach((annualLog)=> {
+        const annualDate = new Date(annualLog.annualDate)
+        if(annualDate.toDateString() === day){
+          return annualRegiter = annualLog.annualTime
+        }
+      })
+      %>
+      <tr class="row">
+        <td class="col-sm-12 col-md-2"><%= day %></td>
+        <td class="col-sm-12 col-md-2"><%= checkin %></td>
+        <td class="col-sm-12 col-md-2"><%= checkout %></td>
+        <td class="col-sm-12 col-md-1"><%= workHistory.Space %></td>
+        <td class="col-sm-12 col-md-2"><%= timeCount.toFixed(2) %></td>
+        <td class="col-sm-12 col-md-2"><%= overTime.toFixed(2) %></td>
+        <td class="col-sm-12 col-md-1"><%= annualRegiter %></td>
+      </tr>
+
+  <%})%>
+  </table>
+<div class="container-fluid fixed ">
+    <input disabled value="Thông tin quản lý"></input>
+    <br>
+    <input disabled value="ID: "></input>
+    <input disabled value="<%=adminId%>"></input>
+    <br>
+    <input disabled value="Name: "></input>
+    <input disabled value="<%=adminName%>"></input>
+</div>
+  <script>
+  </script>
+<%- include('layouts/footer') %>
+
+

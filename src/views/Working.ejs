@@ -8,7 +8,7 @@
 <div class="container-fluid">
     <div class="row">
       <div class="col-xs-12 col-sm-5 col-md-5">
-        <img src="<%=image%>" alt="<%=name%>">
+        <img src="/<%=image%>" alt="<%=name%>">
       </div>
       <div class="col-1"></div>
       <div class="col-xs-12 col-sm-6 col-md-6">
@@ -30,7 +30,7 @@
                       <option id="office" selected="selected">Office</option>
                       <option id="guest">Guest</option>
                     </select>
-
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       <button type="submit" class="btn btn-success col-xs-12 col-sm-3"> Bắt đầu </button>
 
                     <!-- Post Checkout-->
@@ -42,6 +42,7 @@
                           <option id="office" selected="selected">Office</option>
                           <option id="guest">Guest</option>
                         </select>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       <button type="submit" class="btn btn-danger col-xs-12 col-sm-3 dangerous"> Kết thúc </button>
                     <% } %>
                   </form>
