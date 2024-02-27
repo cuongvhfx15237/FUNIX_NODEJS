@@ -11,7 +11,14 @@ const multer = require('multer');
 const errorController = require('./src/controllers/error');
 const User = require('./src/models/user');
 
-const MONGODB_URI = 'mongodb+srv://cuongvhfx15237:adminitration@cuongvhfx15237.k0pn0dz.mongodb.net/Assigment_1?retryWrites=true&w=majority'
+const staffRouter=require('./src/Routers/Staff')
+const covidInfoRouter = require('./src/Routers/covidInfo');
+const authRouters = require('./src/Routers/auth');
+const { Error } = require('sequelize');
+
+require('dotenv').config();
+
+const MONGODB_URI = process.env.MONGODB_URI
 
 const app=express();
 const store = new MongoDBStore({
@@ -28,7 +35,7 @@ const fileStorage = multer.diskStorage({
     }
   });
 
-  const fileFilter = (req, file, cb) => { 
+  const fileFilter = (file, cb) => { 
     if (file.mimetype === 'image/png' || file.mimetype==='image/jpg' || file.mimetype === 'image/jpeg'){
         cb(null, true);
     } else {
@@ -37,11 +44,6 @@ const fileStorage = multer.diskStorage({
   }
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
-
-const staffRouter=require('./src/Routers/Staff')
-const covidInfoRouter = require('./src/Routers/covidInfo');
-const authRouters = require('./src/Routers/auth');
-const { Error } = require('sequelize');
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
@@ -102,7 +104,7 @@ app.use((error, req, res, next) => {
 
 
 mongoose.connect(MONGODB_URI)
-.then(result => {
+.then(() => {
     console.log('Connect: !!!');
     app.listen(3000)
     })

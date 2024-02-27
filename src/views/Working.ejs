@@ -6,200 +6,185 @@
 <hr>
 
 <div class="container-fluid">
-    <div class="row">
-      <div class="col-xs-12 col-sm-5 col-md-5">
-        <img src="/<%=image%>" alt="<%=name%>">
-      </div>
-      <div class="col-1"></div>
-      <div class="col-xs-12 col-sm-6 col-md-6">
-        <h1 class="col-12">Họ và tên: <%=name%>  </h1>
+  <div class="row">
+    <div class="col-xs-12 col-sm-5 col-md-5">
+      <img src="/<%=image%>" alt="<%=name%>">
+    </div>
+    <div class="col-1"></div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+      <h1 class="col-12">Họ và tên: <%=name%>
+      </h1>
+      <!-- Diem danh spacing -->
+      <div>
+        <button class="btn btn-outline-primary col-12" type="button" data-bs-toggle="collapse" data-bs-target="#checkIn" aria-expanded="false" aria-controls="checkIn">
+          Điểm danh
+        </button>
+        <div class="collapse show" id="checkIn">
+          <div class="row">
+            <!-- Post check in-->
+            <% if (status==='true' ) { %>
+            <form action="/checkIn" class="checkIn-form" method="POST">
+              <label class="col-xs-6 col-sm-4"> Nơi làm việc</label>
+              <select class="col-xs-6 col-sm-4" name="workSpace" id="workSpace">
+                <option id="home">Home</option>
+                <option id="office" selected="selected">Office</option>
+                <option id="guest">Guest</option>
+              </select>
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <button type="submit" class="btn btn-success col-xs-12 col-sm-3"> Bắt đầu </button>
 
-        <!-- Diem danh spacing -->
-        <div>
-            <button class="btn btn-outline-primary col-12" type="button" data-bs-toggle="collapse" data-bs-target="#checkIn" aria-expanded="false" aria-controls="checkIn">
-                Điểm danh
-            </button>
-            <div class="collapse show" id="checkIn">
-                <div class="row">
-                  <!-- Post check in-->
-                  <% if (status === 'true') { %>
-                  <form action="/checkin" class="checkin-form" method="POST">
-                    <label class="col-xs-6 col-sm-4"> Nơi làm việc</label>
-                    <select class="col-xs-6 col-sm-4" name="workSpace" id="workSpace">
-                      <option id="home">Home</option>
-                      <option id="office" selected="selected">Office</option>
-                      <option id="guest">Guest</option>
-                    </select>
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                      <button type="submit" class="btn btn-success col-xs-12 col-sm-3"> Bắt đầu </button>
+              <!-- Post Checkout-->
+              <% } else if (status==='false' ) { %>
+              <form action="/checkOut" class="checkIn-form" method="POST">
+                <label class="col-xs-6 col-sm-4"> Nơi làm việc</label>
+                <select class="col-xs-6 col-sm-4" name="workSpace" id="workSpace" disabled="disabled">
+                  <option id="home">Home</option>
+                  <option id="office" selected="selected">Office</option>
+                  <option id="guest">Guest</option>
+                </select>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="btn btn-danger col-xs-12 col-sm-3 dangerous"> Kết thúc </button>
+                <% } %>
+              </form>
+          </div>
+          <input type="text" value="<%=today.toDateString().replace(/^\S+\s/,'')%>" disabled>
+          <table class="table">
+            <thead>
+              <tr class="row">
+                <th class="col-12 col-sm-4">Date</th>
+                <th class="col-12 col-sm-2">Login</th>
+                <th class="col-12 col-sm-2">Logout</th>
+                <th class="col-12 col-sm-2">Time Lapse</th>
+                <th class="col-12 col-sm-2">WorkSpace</th>
+              </tr>
+            </thead>
+            <tbody>
 
-                    <!-- Post Checkout-->
-                    <% }  else if (status === 'false') { %>
-                      <form action="/checkout" class="checkin-form" method="POST">
-                        <label class="col-xs-6 col-sm-4" > Nơi làm việc</label>
-                        <select class="col-xs-6 col-sm-4" name="workSpace" id="workSpace" disabled="disabled">
-                          <option id="home">Home</option>
-                          <option id="office" selected="selected">Office</option>
-                          <option id="guest">Guest</option>
-                        </select>
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                      <button type="submit" class="btn btn-danger col-xs-12 col-sm-3 dangerous"> Kết thúc </button>
-                    <% } %>
-                  </form>
-                </div>
-                <input type="text" value="<%=today.toDateString().replace(/^\S+\s/,'')%>" disabled>
-                <table class="table">
-                    <thead>
-                      <tr class="row">
-                        <th class="col-12 col-sm-4">Date</th>
-                        <th class="col-12 col-sm-2">Login</th>
-                        <th class="col-12 col-sm-2">Logout</th>
-                        <th class="col-12 col-sm-2">Time Lapse</th>
-                        <th class="col-12 col-sm-2">WorkSpace</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+              <% if (workHis.length===0) { %>
 
-                      <% if (workHis.length===0) { %>
-
-                        <tr class="row">
-                          <td class="col-12 col-sm-4">---</td>
-                          <td class="col-12 col-sm-2">---</td>
-                          <td class="col-12 col-sm-2">---</td>
-                          <td class="col-12 col-sm-2">---</td>
-                          <td class="col-12 col-sm-2">---</td>
-                        </tr> 
-                        <%}
-
-                    else {
-                      let newDate = new Date();
-                      let dateVal = newDate.toDateString().replace(/^\S+\s/,'')
-                      let date='';
-                      let checkinVal='';
-                      let checkoutVal='';
-                      let timeSub=0;
-                      let timeLapse = 0;
-                      let subTime = 0
-                      let timeCount = 0
-                      workHis.forEach(history => {
-                        let checkDate = history.checkin.toDateString().replace(/^\S+\s/,'');
-                        if (checkDate === dateVal){
-                              if (history.checkin !== null){
-                                date = history.checkin.toDateString().replace(/^\S+\s/,'');
-                                checkinVal= history.checkin.getHours().toString() + ":" + history.checkin.getMinutes().toString();
-                                  }
-                              if (history.checkout !== null){
-                                    checkoutVal=history.checkout.getHours().toString() + ":" + history.checkout.getMinutes().toString();
-                                    timeSub = history.checkout - history.checkin
-                                    let minutes = Math.floor((timeSub / (1000 * 60)) % 60);
-                                    let hours = Math.floor((timeSub / (1000 * 60 * 60)) % 24);
-                                    timeLapse = hours + ":" + minutes
-                                    subTime += (history.checkout - history.checkin)
-                                  }
-                              else {
-                                    checkoutVal = 0;
-                                    timeLapse = 0
-                                    }         
-              
-                        %>
+              <tr class="row">
+                <td class="col-12 col-sm-4">---</td>
+                <td class="col-12 col-sm-2">---</td>
+                <td class="col-12 col-sm-2">---</td>
+                <td class="col-12 col-sm-2">---</td>
+                <td class="col-12 col-sm-2">---</td>
+              </tr>
+              <% } else { %>
+                <%
+                let newDate= new Date(); 
+                let dateVal=newDate.toDateString().replace(/^\S+\s/,'');
+                let date='' ; 
+                let checkInVal='' ; 
+                let checkoutVal='' ; 
+                let timeSub=0; 
+                let timeLapse=0; 
+                let subTime=0;
+                let timeCount=0;
+                workHis.forEach(history=> {
+                let checkDate = history.checkIn.toDateString().replace(/^\S+\s/,'');
+                if (checkDate === dateVal){
+                if (history.checkIn !== null){
+                date = history.checkIn.toDateString().replace(/^\S+\s/,'');
+                checkInVal= history.checkIn.getHours().toString() + ":" +
+                history.checkIn.getMinutes().toString();
+                }
+                if (history.checkOut !== null){
+                checkoutVal=history.checkOut.getHours().toString() + ":" +
+                history.checkOut.getMinutes().toString();
+                timeSub = history.checkOut - history.checkIn
+                let minutes = Math.floor((timeSub / (1000 * 60)) % 60);
+                let hours = Math.floor((timeSub / (1000 * 60 * 60)) % 24);
+                timeLapse = hours + ":" + minutes
+                subTime += (history.checkOut - history.checkIn)
+                }
+                else {
+                checkoutVal = 0;
+                timeLapse = 0
+                }
+                %>
                         <tr class="row">
                           <td class="col-12 col-sm-4"><%= date %></td>
-                          <td class="col-12 col-sm-2"><%= checkinVal %></td>
+                          <td class="col-12 col-sm-2"><%= checkInVal %></td>
                           <td class="col-12 col-sm-2"><%= checkoutVal %></td>
                           <td class="col-12 col-sm-2"><%= timeLapse %></td>
                           <td class="col-12 col-sm-2"><%= history.Space %></td>
                         </tr> 
                       <% 
-                    }
-                    })
-                    let minutes = Math.floor((subTime/(1000*60))%60);
-                    let hours = Math.floor((subTime/(1000*60*60))%24);
-                    timeCount = hours + ":" + minutes
-                    %>
-                    <tr class="row">
-                      <th colspan="3">Total time in day</th>
-                      <td><%= timeCount%></td>
-                    </tr>
-                    <%
-                    }%>
-  
-                          <!--
-                            let subTime = 0;
-                           for (let i of workHis) {
-                            if(i.checkout !==null) {
-                            subTime += (i.checkout-i.checkin)
-                              } 
-                            }
-                            let minutes = Math.floor((subTime / (1000 * 60)) % 60);
-                            let hours = Math.floor((subTime / (1000 * 60 * 60)) % 24);
-                            let timeCount = hours + ":" + minutes
-                            %>
-
-                          -->
-                    </tbody>
-                  </table>
-            </div>
-          </div>
-          <!--Nghi phep spacing-->
-    <div>
-          <button class="btn btn-outline-primary col-12" type="button" data-bs-toggle="collapse" data-bs-target="#annualTable" aria-expanded="false" aria-controls="annualTable">
-            Nghỉ phép
+                }}); 
+                let minutes=Math.floor((subTime/(1000*60))%60); 
+                let hours=Math.floor((subTime/(1000*60*60))%24); timeCount=hours + ":" + minutes;
+                %>
+        <tr class="row">
+          <th colspan="3">Total time in day</th>
+          <td>
+            <%= timeCount%>
+          </td>
+        </tr>
+              <% }%>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!--Nghi phep spacing-->
+      <div>
+        <button class="btn btn-outline-primary col-12" type="button" data-bs-toggle="collapse" data-bs-target="#annualTable" aria-expanded="false" aria-controls="annualTable">
+          Nghỉ phép
         </button>
         <div class="collapse" id="annualTable">
-            <div class="row">
-              <form action="/annual" method="POST">
-                <div class="mb-3">
-                  <label for="datePick" class="form-label">Ngày đăng ký nghỉ</label>
-                  <input type="text" class="form-control dateAnnual" name="dateAnnual" id="datePick" placeholder="Chọn ngày nghỉ phép" onblur="annualLeaveCheck()">
-                  <div><span class="validated text-danger"></span></div>
-                  <label for="dateAnnual" class="form-label">Số giờ nghỉ trong ngày</label>
-                  <select class="form-control" name="timeAnnual" id="timeAnnual">
-                    <option value="4">4</option>
-                    <option value="8" selected="selected">8</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                  <label for="reasonAnnual" class="form-label">Lí do nghỉ</label>
-                  <textarea class="form-control" id="reasonAnnual" name="reasonAnnual" rows="3" onblur="annualLeaveCheck()"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary col-xs-6 col-sm-3" id="annualSubmit" disabled>Đăng ký</button>
-              </form>
-            </div>
+          <div class="row">
+            <form action="/annual" method="POST">
+              <div class="mb-3">
+                <label for="datePick" class="form-label">Ngày đăng ký nghỉ</label>
+                <input type="text" class="form-control dateAnnual" name="dateAnnual" id="datePick" placeholder="Chọn ngày nghỉ phép" onblur="annualLeaveCheck()">
+                <div><span class="validated text-danger"></span></div>
+                <label for="dateAnnual" class="form-label">Số giờ nghỉ trong ngày</label>
+                <select class="form-control" name="timeAnnual" id="timeAnnual">
+                  <option value="4">4</option>
+                  <option value="8" selected="selected">8</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="reasonAnnual" class="form-label">Lí do nghỉ</label>
+                <textarea class="form-control" id="reasonAnnual" name="reasonAnnual" rows="3" onblur="annualLeaveCheck()"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary col-xs-6 col-sm-3" id="annualSubmit" disabled>Đăng
+                ký</button>
+            </form>
+          </div>
 
-            <div class="row">
-              <p> Số ngày phép còn lại : <%=annualLeave%></p>
-              <span id="alert_annualLeave" class="validated text-danger"> </span>
-            </div>
+          <div class="row">
+            <p> Số ngày phép còn lại : <%=annualLeave%>
+            </p>
+            <span id="alert_annualLeave" class="validated text-danger"> </span>
+          </div>
         </div>
+      </div>
+    </div>
   </div>
-</div>
-</div>
 </div>
 </div>
 <hr>
 <br>
 
 <script>
-  $(document).ready(function () {
+  $(document).ready(function() {
     $('#datePick').multiDatesPicker();
   });
 
-  function annualLeaveCheck(){
+  function annualLeaveCheck() {
     const datePick = document.querySelector('.dateAnnual').value;
     if (datePick === '') {
-      document.querySelector('.validated').innerHTML='vui lòng chọn ngày'
-    }
-    else{
-      document.querySelector('.validated').innerHTML=''
+      document.querySelector('.validated').innerHTML = 'vui lòng chọn ngày'
+    } else {
+      document.querySelector('.validated').innerHTML = ''
       const datePickArr = datePick.split(',');
       const timeAnnual = parseInt(document.querySelector('#timeAnnual').value)
       let timeSubmit = datePickArr.length * timeAnnual
-      if (timeSubmit <= "<%=annualLeave%>"*8) {
-        document.querySelector('#annualSubmit').disabled=false
-        document.querySelector('#alert_annualLeave').innerHTML = timeSubmit/8
-      }
-      else{
-        document.querySelector('#annualSubmit').disabled=true
+      if (timeSubmit <= "<%=annualLeave%>" * 8) {
+        document.querySelector('#annualSubmit').disabled = false
+        document.querySelector('#alert_annualLeave').innerHTML = timeSubmit / 8
+      } else {
+        document.querySelector('#annualSubmit').disabled = true
         document.querySelector('#alert_annualLeave').innerHTML = "Số ngày phép không đủ"
       }
     }

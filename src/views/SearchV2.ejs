@@ -15,18 +15,18 @@
   </tr>
   <% workHistories.forEach(workHistory=> {
     //date value
-      let day = workHistory.checkin.toDateString()
-      let checkin = workHistory.checkin.getHours() + ":" + workHistory.checkin.getMinutes()
-      let checkout = 0;
+      let day = workHistory.checkIn.toDateString()
+      let checkIn = workHistory.checkIn.getHours() + ":" + workHistory.checkIn.getMinutes()
+      let checkOut = 0;
       let timeCount = 0;
       let overTime = 0;
-      if(workHistory.checkout){
-        checkout = workHistory.checkout.getHours() + ":" + workHistory.checkout.getMinutes()
-        timeCount = (workHistory.checkout - workHistory.checkin)/3600000;
+      if(workHistory.checkOut){
+        checkOut = workHistory.checkOut.getHours() + ":" + workHistory.checkOut.getMinutes()
+        timeCount = (workHistory.checkOut - workHistory.checkIn)/3600000;
         overTime = timeCount - 8
       }
       else {
-        checkout = "chưa kết thúc"
+        checkOut = "chưa kết thúc"
       }
       let annualRegiter = 0
       annual.forEach((annualLog)=> {
@@ -38,8 +38,8 @@
       %>
       <tr class="row">
         <td class="col-sm-12 col-md-2"><%= day %></td>
-        <td class="col-sm-12 col-md-2"><%= checkin %></td>
-        <td class="col-sm-12 col-md-2"><%= checkout %></td>
+        <td class="col-sm-12 col-md-2"><%= checkIn %></td>
+        <td class="col-sm-12 col-md-2"><%= checkOut %></td>
         <td class="col-sm-12 col-md-1"><%= workHistory.Space %></td>
         <td class="col-sm-12 col-md-2"><%= timeCount.toFixed(2) %></td>
         <td class="col-sm-12 col-md-2"><%= overTime.toFixed(2) %></td>
